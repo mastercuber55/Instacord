@@ -1,13 +1,29 @@
-import { IgApiClient } from 'instagram-private-api';
 import dotenv from 'dotenv';
+import insta from './insta.js';
+import dc from "./discord.js"
+
 dotenv.config();
 
-const ig = new IgApiClient();
-ig.state.generateDevice(process.env.NAMEUSER);
+dc.client.on("ready", async() => {
+  dc.send("✅ Connected to discord")
+});
 
-(async () => {
-  await ig.account.login(process.env.NAMEUSER, process.env.PASSWORD);
+dc.client.login(process.env.BOTTOKEN)
+insta.login().then(async () => {
+  insta.read()
+})
 
-  const userId = await ig.user.getIdByUsername(process.env.OWNERNAME);
-  await ig.entity.directThread([userId.toString()]).broadcastText('Hello from my erm!');
-})();
+// (async () => {
+
+//   let polling = false
+
+//   setInterval(async() => {
+    
+//     if(polling) return;
+//     polling = true
+//     console.log("polling...")
+
+//     await read()
+//     polling = false
+//   }, 5000)
+// })();
